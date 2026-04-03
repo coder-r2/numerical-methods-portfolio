@@ -1,8 +1,12 @@
-# Chaotic Dynamics and Fractal Boundaries
+# Numerical Methods & Computational Dynamics Portfolio
 
-This repository explores how complex, deterministic nonlinear systems give rise to chaotic behavior and fractal geometry. It includes vectorized Python implementations for visualizing standard fractals and analyzing the onset of mathematical chaos.
+This repository is a collection of computational mathematics projects exploring complex deterministic systems, fractal geometry, and numerical optimization. It includes vectorized Python implementations for visualizing standard fractals, analyzing the onset of mathematical chaos, and solving inverse kinematics using first-order derivative optimization.
 
-## Features & Visualizations
+---
+
+## Module 1: Chaotic Dynamics and Fractal Boundaries
+
+This module explores how complex, deterministic nonlinear systems give rise to chaotic behavior and fractal geometry. 
 
 ### 1. The Mandelbrot Set
 The Mandelbrot set is generated using fixed-point iteration on the complex plane. For a given complex number $c$, we iterate the sequence:
@@ -30,9 +34,43 @@ A key quantity characterizing chaotic dynamics is the Lyapunov exponent ($\lambd
 $$\lambda_{n} = \frac{1}{n}\sum_{k=0}^{n-1}\ln|f^{\prime}(x_{k})|$$
 For $A=4$, the exponent evaluates to a positive constant ($\approx \ln 2$), proving extreme sensitivity to initial conditions and confirming the chaotic nature of the system.
 
+---
+
+## Module 2: Kinematic Optimization (Robotic Arm)
+
+This module implements numerical optimization techniques to solve the inverse kinematics problem for a **3-link planar robotic manipulator**. Given a desired target position for the end-effector, the algorithm computes the necessary joint angles using first-order derivative optimization.
+
+### Forward Kinematics & Objective Function
+The position $\boldsymbol{p}(\boldsymbol{\theta})$ of the end-hook is determined by the joint angles $\boldsymbol{\theta} = [\theta_1, \theta_2, \theta_3]^T$. To reach the target position $\boldsymbol{p_t}$, we minimize the squared Euclidean distance loss function:
+$$L(\boldsymbol{\theta}) = \frac{1}{2} \|\boldsymbol{p}(\boldsymbol{\theta}) - \boldsymbol{p_t}\|^2$$
+
+The gradient $\boldsymbol{\nabla} L(\boldsymbol{\theta})$ is approximated computationally using the central difference method.
+
+### Optimization Algorithms
+The module compares two iterative solvers to traverse the loss landscape:
+
+**1. Vanilla Gradient Descent**
+Updates the joint angles strictly in the direction of steepest descent, governed by the learning rate $\alpha$:
+$$\boldsymbol{\theta_{k+1}} = \boldsymbol{\theta_k} - \alpha \boldsymbol{\nabla} L(\boldsymbol{\theta_k})$$
+
+**2. Gradient Descent with Momentum**
+Introduces a velocity term $\boldsymbol{v}$ to accumulate gradients over time. This helps to navigate shallow gradients and accelerate convergence, governed by the momentum coefficient $\beta$:
+$$\boldsymbol{v_{k+1}} = \beta \boldsymbol{v_k} + \alpha \boldsymbol{\nabla} L(\boldsymbol{\theta_k})$$
+$$\boldsymbol{\theta_{k+1}} = \boldsymbol{\theta_k} - \boldsymbol{v_{k+1}}$$
+
+![Robotic Arm Optimization](robotic-kinematics/imgs/arm_optimization.png)
+
+---
+
 ## Setup & Usage
 
-1. Clone this repository.
-2. Install the required dependencies:
+1. Clone this repository:
    ```bash
-   pip install numpy matplotlib
+   git clone [https://github.com/coder-r2/Numerical-Methods-Portfolio.git](https://github.com/your-username/Numerical-Methods-Portfolio.git)
+2. Install the required dependencies
+    ``` bash
+    pip install numpy matplotlib
+3. Navigate to the desired module and run the visualization scripts to generate the plots:
+    ``` bash
+    cd fractal-dynamics
+    python visualize.py
