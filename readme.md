@@ -62,6 +62,35 @@ $$\boldsymbol{\theta_{k+1}} = \boldsymbol{\theta_k} - \boldsymbol{v_{k+1}}$$
 
 ---
 
+## Module 3: Fourier Shape Synthesizer
+
+This module leverages complex Fourier series to computationally reconstruct 2D closed curves and shapes (such as letter outlines) from a set of discrete Cartesian coordinates. 
+
+### Mathematical Formulation
+A discrete set of points $(x_j, y_j)$ representing a closed outline can be converted into a periodic complex-valued sequence $z(t) = x(t) + iy(t)$. We can express this function as an infinite sum of complex exponentials:
+$$z(t) = \sum_{k=-\infty}^{\infty} c_k e^{i2\pi kt}$$
+
+The Fourier coefficients $c_k$ quantify the contribution of each frequency component and are computed via the integral:
+$$c_k = \int_0^1 z(t) e^{-i2\pi kt}dt$$
+
+### Spectral Convergence via Trapezoidal Rule
+To compute $c_k$ programmatically, the integral is approximated using the numerical Trapezoidal rule. While the standard Trapezoidal rule has an error bound of $\mathcal{O}(h^2)$, the **Euler-Maclaurin formula** proves that for smooth, strictly periodic functions, the error terms vanish. This results in **spectral convergence**, making the Trapezoidal rule exponentially more accurate here than alternatives like composite Simpson's rule.
+
+$$c_k \approx h \sum_{j=0}^{N-1} z(t_j) e^{-i2\pi k t_j}$$
+
+### Truncation and Reconstruction
+By truncating the series to a finite number of terms $M$, we obtain a smoothed approximation of the original shape:
+$$z_M(t) = \sum_{k=-M}^M c_k e^{i2\pi kt}$$
+
+As $M$ increases, higher-frequency details (sharp corners, minute curves) are successfully captured and reconstructed. 
+
+![Fourier Reconstruction of "R"](fourier-shape-synthesis/imgs/fourier_reconstruction_R.png)
+
+### Epicycle Animation
+The sum of complex exponentials can be visualized geometrically as a chain of rotating vectors (epicycles) in the complex plane. 
+
+![Fourier Animation of "R"](fourier-shape-synthesis/imgs/fourier_animation_R.gif)
+
 ## Setup & Usage
 
 1. Clone this repository:
